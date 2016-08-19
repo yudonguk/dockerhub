@@ -18,7 +18,9 @@ RUN echo '#!/bin/sh' > /usr/sbin/policy-rc.d \
 && echo 'Acquire::GzipIndexes "true"; Acquire::CompressionTypes::Order:: "gz";' > /etc/apt/apt.conf.d/docker-gzip-indexes
 # enable the universe
 RUN sed -i 's/^#\s*\(deb.*universe\)$/\1/g' /etc/apt/sources.list
-RUN apt-get update && apt-get -y upgrade && apt-get autoremove && apt-get clean
+RUN apt-get update && \
+    apt-get install -qy qt5-default qtmultimedia5-dev libboost-dev git vim cmake && \
+    apt-get -y upgrade && apt-get autoremove && apt-get clean
 # overwrite this with 'CMD []' in a dependent Dockerfile
 CMD ["/bin/bash"]
 ENTRYPOINT ["linux32", "--"]
